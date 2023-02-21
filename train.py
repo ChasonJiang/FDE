@@ -20,8 +20,8 @@ class Trainer(object):
     def __init__(self,):
         self.datasetDir = "./dataset/train"
         self.batch_size = 8 
-        self.num_class = 84
-        self.num_epoch = 40
+        self.num_class = 75
+        self.num_epoch = 8
         self.lr = 0.000005
         self.device = torch.device("cuda")
         self.model_load_path = None

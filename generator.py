@@ -9,6 +9,7 @@ import numpy as np
 from pytools import F
 import torch
 import torchvision
+from face_data_utils import vectorParse
 # from sklearn.metrics.pairwise import cosine_similarity
 
 torch.manual_seed(123)
@@ -39,11 +40,11 @@ class Generator(object):
         with torch.no_grad():
             output=self.model(img)
             output = output.squeeze(0).detach().cpu()
-        print(output)
-        torch.save(output,savepath)
-        # with open(savepath,"w") as f:
-            
-        #     json.dump({"data":list(output)},f)
+        # print(output)
+        # torch.save(output,savepath)
+        data = vectorParse(output.numpy())
+        with open(savepath,"w") as f:
+            json.dump(data,f)
 
     
         
@@ -73,5 +74,5 @@ class Generator(object):
 if __name__ =="__main__":
     generator = Generator()
     # generator.generate("dataset/val/images/upai_chara_0020762.png","test/face_data/upai_chara_0020762.json")
-    # generator.generate("test/images/yuechan_1.jpg","test/face_data/yuechan_1.pth")
-    generator.generate("test/images/yuechan_2.jpg","test/face_data/yuechan_2.pth")
+    # generator.generate("test/images/yuechan_1.jpg","test/face_data/yuechan_1.json")
+    # generator.generate("test/images/yuechan_2.jpg","test/face_data/yuechan_2.json")
