@@ -21,13 +21,13 @@ class Trainer(object):
         self.datasetDir = "./dataset/train"
         self.batch_size = 8 
         self.num_class = 75
-        self.num_epoch = 10
+        self.num_epoch = 5
         self.lr = 0.000005
         self.im_size = (252, 352)
         self.device = torch.device("cuda")
         self.model_load_path = None
         self.model_save_path = "./models"
-        self.save_freq = 2
+        self.save_freq = 1
         self.tb_log_save_path = "./tb_log/"
 
 

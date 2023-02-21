@@ -322,14 +322,14 @@ def generate_labels():
 
 
 if __name__ == "__main__":
-    # characterCard = CharacterCard("test/character_card/xiaowu.png")
+    characterCard = CharacterCard("test/character_card/xiaowu.png")
 
-    # print(characterCard.data)
+    print(characterCard.data)
 
-    # characterCard.convertToJson("xiaowu.json")
+    characterCard.convertToJson("xiaowu.json")
 
 
-    generate_labels()
+    # generate_labels()
 
         
     # bar = tqdm(findAllFile("dataset/new_images"))

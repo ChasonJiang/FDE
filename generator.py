@@ -78,4 +78,5 @@ if __name__ =="__main__":
     # generator.generate("dataset/val/images/upai_chara_0020762.png","test/face_data/upai_chara_0020762.json")
     data=generator.generate("test/images/yuechan_1.jpg","test/face_data/yuechan_1.json")
     # generator.generate("test/images/yuechan_2.jpg","test/face_data/yuechan_2.json")
+    # data=generator.generate("test/character_card/xiaowu.png","test/face_data/xiaowu.json")
     print(data)

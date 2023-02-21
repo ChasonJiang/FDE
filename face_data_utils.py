@@ -89,7 +89,9 @@ def vectorParse(vector:np.ndarray)->dict:
             data[field] = round(vector[index]*100)
             index+=1
         else:
-            data[field] = [round(idx*255) for idx in vector[index:index+3]]
-            index+=3
+            rgba= [round(idx*255) for idx in vector[index:index+3]]
+            rgba.append(round(vector[index+3]*100))
+            data[field]=rgba
+            index+=4
 
     return data

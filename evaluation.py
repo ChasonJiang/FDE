@@ -20,7 +20,7 @@ class Evaluator(object):
     def __init__(self,):
         self.datasetDir = "./dataset/val"
         self.batch_size = 8 
-        self.num_class = 92
+        self.num_class = 75
         self.device = torch.device("cuda")
         self.model_load_path = "models\last.pth"
         # os.remove(self.tb_log_save_path)
