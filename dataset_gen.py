@@ -280,7 +280,11 @@ def generate_labels():
     labels = {}
     for imagePath in bar:
         characterCard = CharacterCard(imagePath)
-        imageName = imagePath.split(os.sep)[-1].split(".")[0]
+        imageName = imagePath.split(os.sep)[-1].split(".")[:-1]
+        if len(imageName)>1:
+            imageName=".".join(imageName)
+        else:
+            imageName = imageName[0]
         # savePath = os.path.join("./dataset_json",imageName+".json")
         # characterCard.convertToJson(savePath)
         face_data=characterCard.convertToLabel()
@@ -297,7 +301,11 @@ def generate_labels():
     dim = 0
     for imagePath in bar:
         characterCard = CharacterCard(imagePath)
-        imageName = imagePath.split(os.sep)[-1].split(".")[0]
+        imageName = imagePath.split(os.sep)[-1].split(".")[:-1]
+        if len(imageName)>1:
+            imageName=".".join(imageName)
+        else:
+            imageName = imageName[0]
         # savePath = os.path.join("./dataset_json",imageName+".json")
         # characterCard.convertToJson(savePath)
         face_data=characterCard.convertToLabel()
@@ -324,7 +332,7 @@ if __name__ == "__main__":
     generate_labels()
 
         
-    # bar = tqdm(findAllFile("new_images"))
+    # bar = tqdm(findAllFile("dataset/new_images"))
     # labels = {}
     # dim = 0
     # for imagePath in bar:

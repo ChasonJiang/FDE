@@ -13,8 +13,8 @@ def dump_images(base):
 
 
 if __name__ == '__main__':
-    images_dir ="D:\\Downloads\\斗罗大陆\\unzip"
-    save_dir = "new_images/7"
+    images_dir ="D:\\Downloads\\超级极品高价商业mod全集\\AST\\unzip"
+    save_dir = "dataset/new_images/3"
 
     for item in dump_images(images_dir):
         copy(item, save_dir)
