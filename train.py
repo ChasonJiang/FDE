@@ -28,9 +28,9 @@ class Trainer(object):
         self.model_save_path = "./models"
         self.save_freq = 4
         self.tb_log_save_path = "./tb_log/"
-        # os.remove(self.tb_log_save_path)
-        self.tb_logger = SummaryWriter(log_dir=self.tb_log_save_path,)
 
+
+        self.tb_logger = SummaryWriter(log_dir=self.tb_log_save_path,)
         self.dataset = BaseDataset(self.datasetDir,True,True)
         self.dataLoader = DataLoader(self.dataset,batch_size=self.batch_size,shuffle=True,num_workers=2)
         self.model = torchvision.models.resnet50(pretrained=True)
