@@ -11,12 +11,12 @@ FACE_DATA_FIELD = [
     "脸下部宽度",
     # 下巴
     "下颚宽度",
-    "下巴上下位置",
+    "下巴上下位置1",
     "下巴前后位置",
     "下颚角度",
     "下颚底部上下位置",
     "下巴宽度",
-    "下巴上下位置",
+    "下巴上下位置2",
     "下巴前后",
     # 脸颊
     "脸颊下部上下位置",
@@ -29,14 +29,14 @@ FACE_DATA_FIELD = [
     "眼睛上下",
     "眼位",
     "眼睛前后",
-    "眼宽",
-    "眼宽",
+    "眼宽1",
+    "眼宽2",
     "眼角z轴",
     "视角y轴",
-    "左右眼位置",
-    "左右眼位置",
-    "眼角上下位置",
-    "眼角上下位置",
+    "左右眼位置1",
+    "左右眼位置2",
+    "眼角上下位置1",
+    "眼角上下位置2",
     "眼皮形状1",
     "眼皮形状2",
     # 鼻子
@@ -70,19 +70,26 @@ FACE_DATA_FIELD = [
     "上耳形",
     "耳下部形状",
     # 其他
-    "眉色"
-    "唇色"
-    "眼影颜色"
-    "腮红颜色"
+    "眉色",
+    "唇色",
+    "眼影颜色",
+    "腮红颜色",
 ]
 
 def vectorParse(vector:np.ndarray)->dict:
     
-    assert vector is np.ndarray
-    assert len(vector) == len(FACE_DATA_FIELD)
+    assert isinstance(vector,np.ndarray)
+    assert len(vector) -12 == len(FACE_DATA_FIELD)
     
     data = {}
-    for i in range(len(vector)):
-        data[FACE_DATA_FIELD[i]] = float(vector[i])
+    index = 0
+    for i in range(len(FACE_DATA_FIELD)):
+        field = FACE_DATA_FIELD[i]
+        if field not in ["眉色","唇色","眼影颜色","腮红颜色"]:
+            data[field] = round(vector[index]*100)
+            index+=1
+        else:
+            data[field] = [round(idx*255) for idx in vector[index:index+3]]
+            index+=3
 
     return data

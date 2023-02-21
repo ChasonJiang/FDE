@@ -19,9 +19,9 @@ random.seed(123)
 class Generator(object):
     def __init__(self,):
         self.datasetDir = "./dataset/val"
-        self.num_class = 92
+        self.num_class = 75
         self.device = torch.device("cuda")
-        self.model_load_path = "models\last.pth"
+        self.model_load_path = "models/epoch 4.pth"
         self.im_size = (288,512)
         # os.remove(self.tb_log_save_path)
 
@@ -43,9 +43,11 @@ class Generator(object):
         # print(output)
         # torch.save(output,savepath)
         data = vectorParse(output.numpy())
-        with open(savepath,"w") as f:
-            json.dump(data,f)
+        data = json.dumps(data,ensure_ascii=False,indent=4)
+        with open(savepath,"w",encoding="utf-8") as f:
+            f.write(data)
 
+        return data
     
         
 
@@ -74,5 +76,6 @@ class Generator(object):
 if __name__ =="__main__":
     generator = Generator()
     # generator.generate("dataset/val/images/upai_chara_0020762.png","test/face_data/upai_chara_0020762.json")
-    # generator.generate("test/images/yuechan_1.jpg","test/face_data/yuechan_1.json")
+    data=generator.generate("test/images/yuechan_1.jpg","test/face_data/yuechan_1.json")
     # generator.generate("test/images/yuechan_2.jpg","test/face_data/yuechan_2.json")
+    print(data)

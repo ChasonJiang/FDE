@@ -21,8 +21,9 @@ class Trainer(object):
         self.datasetDir = "./dataset/train"
         self.batch_size = 8 
         self.num_class = 75
-        self.num_epoch = 8
+        self.num_epoch = 40
         self.lr = 0.000005
+        self.im_size = None
         self.device = torch.device("cuda")
         self.model_load_path = None
         self.model_save_path = "./models"
@@ -31,7 +32,7 @@ class Trainer(object):
 
 
         self.tb_logger = SummaryWriter(log_dir=self.tb_log_save_path,)
-        self.dataset = BaseDataset(self.datasetDir,True,True)
+        self.dataset = BaseDataset(self.datasetDir,True,False,self.im_size)
         self.dataLoader = DataLoader(self.dataset,batch_size=self.batch_size,shuffle=True,num_workers=2)
         self.model = torchvision.models.resnet50(pretrained=True)
         self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_class)
@@ -42,7 +43,7 @@ class Trainer(object):
         
         self.optim =torch.optim.Adam(self.model.parameters(), lr=self.lr)
 
-        self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.15, last_epoch=-1)
+        self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.1, last_epoch=-1)
 
 
     def train(self,):

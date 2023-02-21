@@ -50,7 +50,8 @@ class BaseDataset(Dataset):
 
         # BGR to RGB, HWC to CHW, numpy to tensor
         img = img[:, :, [2, 1, 0]]
-        img = cv2.resize(img, self.im_size, interpolation = cv2.INTER_AREA)
+        if self.im_size is not None:
+            img = cv2.resize(img, self.im_size, interpolation = cv2.INTER_AREA)
         img_tensor = torch.from_numpy(np.ascontiguousarray(np.transpose(img, (2,1,0)))).float()
         label=torch.tensor(label)
 
