@@ -1,0 +1,8 @@
+dataset/*
+models/*
+tb_log/*
+test/*
+models/epoch 31.pth
+models/epoch 35.pth
+tb_log/events.out.tfevents.1676909926.White-PC.30184.0
+__pycache__/*
