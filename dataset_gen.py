@@ -7,6 +7,80 @@ import json
 import numpy as np
 from tqdm import tqdm 
 
+FACE_DATA_FIELD = [
+    # 整体
+    "全脸宽度",
+    "脸上部前后位置",
+    "脸部上方和下方",
+    "下脸前后位置",
+    "脸下部宽度",
+    # 下巴
+    "下颚宽度",
+    "下巴上下位置",
+    "下巴前后位置",
+    "下颚角度",
+    "下颚底部上下位置",
+    "下巴宽度",
+    "下巴上下位置",
+    "下巴前后",
+    # 脸颊
+    "脸颊下部上下位置",
+    "下颊前后",
+    "下颊宽度",
+    "脸颊上部上下位置",
+    "上颊前后",
+    "脸上部宽度",
+    # 眼
+    "眼睛上下",
+    "眼位",
+    "眼睛前后",
+    "眼宽",
+    "眼宽",
+    "眼角z轴",
+    "视角y轴",
+    "左右眼位置",
+    "左右眼位置",
+    "眼角上下位置",
+    "眼角上下位置",
+    "眼皮形状1",
+    "眼皮形状2",
+    # 鼻子
+    "整个鼻子上下位置",
+    "整个鼻子前后",
+    "鼻子整体角度X轴",
+    "鼻子的整个宽度",
+    "鼻梁高度",
+    "鼻梁宽度",
+    "鼻梁形状",
+    "鼻宽",
+    "上下鼻子",
+    "鼻子前后",
+    "机头角度X轴",
+    "机头角度Z轴",
+    "鼻子高度",
+    "鼻尖X轴",
+    "鼻尖大小",
+    # 嘴唇
+    "嘴上下",
+    "口宽",
+    "嘴唇宽度",
+    "嘴前后位置",
+    "上嘴唇形",
+    "下嘴唇形",
+    "嘴型嘴角",
+    # 耳
+    "耳长",
+    "耳角Y轴",
+    "耳角Z轴",
+    "上耳形",
+    "耳下部形状",
+    # 其他
+    "眉色"
+    "唇色"
+    "眼影颜色"
+    "腮红颜色"
+]
+
 class CardType(object):
     Koikatu = "【KoiKatuChara】"
     KoikatsuParty = "【KoiKatuCharaS】"
@@ -205,7 +279,7 @@ class CharacterCard(object):
         # face_data.append(face_data_dict["headId"]/255.0)
         # face_data.append(face_data_dict["skinId"]/255.0)
         # face_data.append(face_data_dict["detailId"]/255.0)
-        face_data.append(face_data_dict["detailPower"])
+        # face_data.append(face_data_dict["detailPower"])
         # face_data.append(face_data_dict["eyebrowId"]/255.0)
         face_data.extend(face_data_dict["eyebrowColor"])
         # face_data.append(face_data_dict["noseId"]/255.0)
@@ -230,8 +304,8 @@ class CharacterCard(object):
         # face_data.append(face_data_dict["eyelineUpId"]/255.0)
         # face_data.extend(face_data_dict["eyelineColor"])
         # face_data.append(face_data_dict["moleId"]/255.0)
-        face_data.extend(face_data_dict["moleColor"])
-        face_data.extend(face_data_dict["moleLayout"])
+        # face_data.extend(face_data_dict["moleColor"])
+        # face_data.extend(face_data_dict["moleLayout"])
         makeup = face_data_dict["baseMakeup"] if "baseMakeup" in face_data_dict.keys() else face_data_dict["makeup"]
         # face_data.append(makeup["lipId"]/255.0)
         face_data.extend(makeup["lipColor"])
@@ -261,13 +335,7 @@ def findAllFile(base):
 
 
 
-if __name__ == "__main__":
-    # characterCard = CharacterCard("test2.png")
-
-    # print(characterCard.data)
-
-    # characterCard.convertToJson("test2.json")
-
+def generate_labels():
     bar = tqdm(findAllFile("dataset/train/images"))
     labels = {}
     for imagePath in bar:
@@ -298,4 +366,15 @@ if __name__ == "__main__":
 
 
     print(f"dim: {dim}")
+
+
+
+if __name__ == "__main__":
+    characterCard = CharacterCard("test/character_card/xiaowu.png")
+
+    print(characterCard.data)
+
+    characterCard.convertToJson("xiaowu.json")
+
+
         

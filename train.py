@@ -71,10 +71,10 @@ class Trainer(object):
                 self.tb_logger.add_scalar("lr",lr,step)
                 self.tb_logger.add_scalar("batch cosine similarity",similarity,step)
 
-                print(f"epoch: {i} | batch: {idx} | loss: {loss} | lr: {lr} | similarity: {similarity.cpu().numpy()}")
+                print(f"epoch: {i+1} | batch: {idx+1} | loss: {loss} | lr: {lr} | similarity: {similarity.cpu().numpy()}")
 
             if (i+1)%self.save_freq==0:
-                self.save_model(self.model,f"epoch {i}")
+                self.save_model(self.model,f"epoch {i+1}")
             self.scheduler.step()
             
         self.save_model(self.model,f"last")
