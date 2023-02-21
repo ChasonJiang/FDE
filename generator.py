@@ -9,10 +9,6 @@ import numpy as np
 from pytools import F
 import torch
 import torchvision
-from torch.utils.data import DataLoader
-from dataset import BaseDataset
-from torch.nn import CrossEntropyLoss,MSELoss
-from torch.utils.tensorboard import SummaryWriter
 # from sklearn.metrics.pairwise import cosine_similarity
 
 torch.manual_seed(123)
