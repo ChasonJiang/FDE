@@ -21,13 +21,13 @@ class Trainer(object):
         self.datasetDir = "./dataset/train"
         self.batch_size = 8 
         self.num_class = 75
-        self.num_epoch = 40
+        self.num_epoch = 20
         self.lr = 0.000005
-        self.im_size = None
+        self.im_size = (252, 352)
         self.device = torch.device("cuda")
         self.model_load_path = None
         self.model_save_path = "./models"
-        self.save_freq = 4
+        self.save_freq = 2
         self.tb_log_save_path = "./tb_log/"
 
 
@@ -43,7 +43,7 @@ class Trainer(object):
         
         self.optim =torch.optim.Adam(self.model.parameters(), lr=self.lr)
 
-        self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.1, last_epoch=-1)
+        self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.075, last_epoch=-1)
 
 
     def train(self,):

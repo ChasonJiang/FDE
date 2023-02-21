@@ -1,5 +1,6 @@
 
 import os
+import re
 from turtle import pos
 import msgpack
 import json
@@ -37,7 +38,10 @@ class CharacterCard(object):
         if self.filePath is None:
             raise ValueError("filePath cannot be None")
         self.cardData=self.readCard(filePath)
-        self.data=dict(self.parseCard(self.cardData))
+        data=self.parseCard(self.cardData)
+        self.data =None
+        if data is not None:
+            self.data=dict(data)
 
         return self.data
         
@@ -61,7 +65,8 @@ class CharacterCard(object):
         elif cardType == CardType.KoikatsuSunshine:
             data = self.parseKoikatsuSunshine(cardData)
         else:
-            raise ValueError(f"connot supported card type: {cardType}")
+            print(f"connot supported card {self.filePath}")
+            # raise ValueError(f"connot supported card type: {cardType}")
         
         return data
 
@@ -189,7 +194,15 @@ class CharacterCard(object):
         if self.data is None:
             self.parse(self.filePath)
 
-        data =  self.data["Custom"]
+        data = None
+        if self.data is not None:
+            if "Custom" in self.data.keys():
+                data =  self.data["Custom"]
+            else:
+                print(f"no found key 'Custom', skip img {self.filePath}")
+                return None
+        else:
+            return None
 
         face_data_dict = None
 
@@ -270,10 +283,13 @@ def generate_labels():
         imageName = imagePath.split(os.sep)[-1].split(".")[0]
         # savePath = os.path.join("./dataset_json",imageName+".json")
         # characterCard.convertToJson(savePath)
-        labels[imageName]=characterCard.convertToLabel()
+        face_data=characterCard.convertToLabel()
+        if face_data is not None:
+            dim = len(face_data)
+            labels[imageName]=face_data
 
-    with open("./dataset/train/labels.json","w") as f:
-        json.dump(labels,f)
+    with open("./dataset/train/labels.json","w",encoding="utf-8") as f:
+        json.dump(labels,f,ensure_ascii=False,indent=4)
 
 
     bar = tqdm(findAllFile("dataset/val/images"))
@@ -285,11 +301,12 @@ def generate_labels():
         # savePath = os.path.join("./dataset_json",imageName+".json")
         # characterCard.convertToJson(savePath)
         face_data=characterCard.convertToLabel()
-        dim = len(face_data)
-        labels[imageName]=face_data
+        if face_data is not None:
+            dim = len(face_data)
+            labels[imageName]=face_data
 
-    with open("./dataset/val/labels.json","w") as f:
-        json.dump(labels,f)
+    with open("./dataset/val/labels.json","w",encoding="utf-8") as f:
+        json.dump(labels,f,ensure_ascii=False,indent=4)
 
 
     print(f"dim: {dim}")
@@ -297,13 +314,28 @@ def generate_labels():
 
 
 if __name__ == "__main__":
-    characterCard = CharacterCard("test/character_card/xiaowu.png")
+    # characterCard = CharacterCard("test/character_card/xiaowu.png")
 
-    print(characterCard.data)
+    # print(characterCard.data)
 
-    characterCard.convertToJson("xiaowu.json")
+    # characterCard.convertToJson("xiaowu.json")
 
 
-    # generate_labels()
+    generate_labels()
 
         
+    # bar = tqdm(findAllFile("new_images"))
+    # labels = {}
+    # dim = 0
+    # for imagePath in bar:
+    #     characterCard = CharacterCard(imagePath)
+    #     imageName = imagePath.split(os.sep)[-1].split(".")[0]
+    #     # savePath = os.path.join("./dataset_json",imageName+".json")
+    #     # characterCard.convertToJson(savePath)
+    #     face_data=characterCard.convertToLabel()
+    #     if face_data is not None:
+    #         dim = len(face_data)
+    #         labels[imageName]=face_data
+
+    # with open("labels.json","w",encoding="utf-8") as f:
+    #     json.dump(labels,f,ensure_ascii=False,indent=4)

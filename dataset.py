@@ -27,7 +27,7 @@ class BaseDataset(Dataset):
         self.im_size = im_size
 
         self.labels:dict = None
-        with open(os.path.join(self.root_dir,"labels.json"),'r') as f:
+        with open(os.path.join(self.root_dir,"labels.json"),'r',encoding="utf-8") as f:
             self.labels:dict = json.load(f)
 
         self.index = {}
