@@ -1,5 +1,4 @@
 import numpy as np
-import torch
 
 
 FACE_DATA_FIELD = [

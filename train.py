@@ -1,9 +1,5 @@
-
-
-
 import os
 import random
-from pytools import F
 import torch
 import torchvision
 from torch.utils.data import DataLoader

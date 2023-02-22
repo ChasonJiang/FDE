@@ -1,12 +1,7 @@
-
-
-
 import json
-import os
 import random
 import cv2
 import numpy as np
-from pytools import F
 import torch
 import torchvision
 from face_data_utils import vectorParse
@@ -83,9 +78,9 @@ class Extractor(object):
 
 
 if __name__ =="__main__":
+    # Step 1, Create an Extractor instance
     extractor = Extractor()
-    # extractor.extract("dataset/val/images/upai_chara_0020762.png","test/face_data/upai_chara_0020762.json")
-    data=extractor.extract("test/images/yuechan_1.jpg","test/face_data/yuechan_1.json")
-    # extractor.extract("test/images/yuechan_2.jpg","test/face_data/yuechan_2.json")
-    # data=extractor.extract("test/character_card/xiaowu.png","test/face_data/xiaowu.json")
+    # Step 2, Extract the face data from image to json file
+    data=extractor.extract(filename="test/images/yuechan_1.jpg",savepath="test/face_data/yuechan_1.json")
+    # [Optional] Step 3, Print face data to the console
     print(data)
