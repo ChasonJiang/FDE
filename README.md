@@ -27,8 +27,8 @@
 - ### Train
 	- Step 1, Download the dataset into project root dir.
 	- Step 2, Run train.py
-	- [Optional]  You can find the initConfig() function in the Extractor class to modify the configuration of the Extractor.
+	- [Optional]  You can find the initConfig() function in the Trainer class to modify the configuration of the Extractor.
 - ### Evaluate
 	- Step 1. Download the dataset into project root dir.
 	- Step 2, Run evaluation.py
-	- [Optional]  You can find the initConfig() function in the Extractor class to modify the configuration of the Extractor.
+	- [Optional]  You can find the initConfig() function in the Evaluator class to modify the configuration of the Extractor.
