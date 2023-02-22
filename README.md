@@ -10,9 +10,14 @@
 	- Pytorch
 	- Numpy 
 	- Opencv
-	- TensorboardX
+	- Tensorboard
 
 - You can use the following installation command:
+	- pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
+	- pip install numpy
+	- pip install opencv-python
+	- pip install tensorboard
+- Recommend: It is recommended to use anaconda to install in a virtual environment
 
 ## Usage
 
