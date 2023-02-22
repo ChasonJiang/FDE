@@ -34,7 +34,7 @@ class Trainer(object):
         # string or None. Load path of model
         self.model_load_path = None
         # string.saveing path of model
-        self.model_save_path = "./models"
+        self.model_save_path = "./checkpoints"
         # int. Frequency of model saving
         self.save_freq = 1
         # string. Saving path of tensorboard log

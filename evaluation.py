@@ -22,7 +22,7 @@ class Evaluator(object):
         self.batch_size = 8 
         self.num_dim = 75
         self.device = torch.device("cuda")
-        self.model_load_path = "models\last.pth"
+        self.model_load_path = "checkpoints/last.pth"
         # os.remove(self.tb_log_save_path)
 
     def init(self):
