@@ -18,24 +18,38 @@ random.seed(123)
 
 class Trainer(object):
     def __init__(self,):
+        self.initConfig()
+        self.init()
+
+    def initConfig(self):
+        # string. The root directory of the dataset
         self.datasetDir = "./dataset/train"
         self.batch_size = 8 
-        self.num_class = 75
+        # int. Number of feature vector dimensions of face
+        self.num_dim = 75
+        # int. Number of epoch to learn
         self.num_epoch = 5
+        # float. learning rate
         self.lr = 0.000005
+        # tuple. resize image to the shape 
         self.im_size = (252, 352)
+        # "cpu" or "cuda"
         self.device = torch.device("cuda")
+        # string or None. Load path of model
         self.model_load_path = None
+        # string.saveing path of model
         self.model_save_path = "./models"
+        # int. Frequency of model saving
         self.save_freq = 1
+        # string. Saving path of tensorboard log
         self.tb_log_save_path = "./tb_log/"
 
-
+    def init(self):
         self.tb_logger = SummaryWriter(log_dir=self.tb_log_save_path,)
         self.dataset = BaseDataset(self.datasetDir,True,False,self.im_size)
         self.dataLoader = DataLoader(self.dataset,batch_size=self.batch_size,shuffle=True,num_workers=2)
         self.model = torchvision.models.resnet50(pretrained=True)
-        self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_class)
+        self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_dim)
         if self.model_load_path is not None:
             self.load_model(self.model_load_path,self.model)
         self.model=self.model.to(self.device)

@@ -16,23 +16,32 @@ torch.manual_seed(123)
 torch.cuda.random.manual_seed(123)
 random.seed(123)
 
-class Generator(object):
+class Extractor(object):
     def __init__(self,):
-        self.datasetDir = "./dataset/val"
-        self.num_class = 75
-        self.device = torch.device("cuda")
-        self.model_load_path = "models/epoch 4.pth"
-        self.im_size = (288,512)
-        # os.remove(self.tb_log_save_path)
+        self.initConfig()
+        self.init()
 
+
+    def initConfig(self):
+        # int. Number of feature vector dimensions of face. (Don't modify it, if you don't know what it means)
+        self.num_dim = 75
+        # to extract on "cpu" or "cuda"(gpu)
+        self.device = torch.device("cuda")
+        # string.saveing path of model
+        self.model_load_path = "models/last.pth"
+        # tuple. resize image to the shape. The aspect ratio should be 9:16
+        self.im_size = (288,512)
+
+
+    def init(self):
 
         self.model = torchvision.models.resnet50(pretrained=True)
-        self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_class)
+        self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_dim)
         if self.model_load_path is not None:
             self.load_model(self.model_load_path,self.model)
         self.model=self.model.to(self.device)
         
-    def generate(self,filename:str,savepath:str):
+    def extract(self,filename:str,savepath:str):
         self.model.eval()
         img = self.readImage(filename)
         img=img.to(self.device).unsqueeze(0)
@@ -74,9 +83,9 @@ class Generator(object):
 
 
 if __name__ =="__main__":
-    generator = Generator()
-    # generator.generate("dataset/val/images/upai_chara_0020762.png","test/face_data/upai_chara_0020762.json")
-    data=generator.generate("test/images/yuechan_1.jpg","test/face_data/yuechan_1.json")
-    # generator.generate("test/images/yuechan_2.jpg","test/face_data/yuechan_2.json")
-    # data=generator.generate("test/character_card/xiaowu.png","test/face_data/xiaowu.json")
+    extractor = Extractor()
+    # extractor.extract("dataset/val/images/upai_chara_0020762.png","test/face_data/upai_chara_0020762.json")
+    data=extractor.extract("test/images/yuechan_1.jpg","test/face_data/yuechan_1.json")
+    # extractor.extract("test/images/yuechan_2.jpg","test/face_data/yuechan_2.json")
+    # data=extractor.extract("test/character_card/xiaowu.png","test/face_data/xiaowu.json")
     print(data)

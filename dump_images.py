@@ -13,7 +13,7 @@ def dump_images(base):
 
 
 if __name__ == '__main__':
-    images_dir ="D:\\Downloads\\超级极品高价商业mod全集\\AST\\unzip"
+    images_dir =""
     save_dir = "dataset/new_images/3"
 
     for item in dump_images(images_dir):

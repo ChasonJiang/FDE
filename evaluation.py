@@ -18,18 +18,24 @@ random.seed(123)
 
 class Evaluator(object):
     def __init__(self,):
+        self.initConfig()
+        self.init()
+
+
+    def initConfig(self):
         self.datasetDir = "./dataset/val"
         self.batch_size = 8 
-        self.num_class = 75
+        self.num_dim = 75
         self.device = torch.device("cuda")
         self.model_load_path = "models\last.pth"
         # os.remove(self.tb_log_save_path)
 
+    def init(self):
 
         self.dataset = BaseDataset(self.datasetDir,True,True)
         self.dataLoader = DataLoader(self.dataset,batch_size=self.batch_size,shuffle=True,num_workers=0)
         self.model = torchvision.models.resnet50(pretrained=True)
-        self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_class)
+        self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_dim)
         if self.model_load_path is not None:
             self.load_model(self.model_load_path,self.model)
         self.model=self.model.to(self.device)
