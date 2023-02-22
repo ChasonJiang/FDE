@@ -18,11 +18,11 @@
 
 - ### Extract
 	- Step 1, Using extractor.py，Create an Extractor instance
-		extractor = Extractor()
+		- extractor = Extractor()
 	- Step 2, Extract the face data from image to json file
-		data=extractor.extract(<image_path>,<json_path>)
+		- data=extractor.extract(<image_path>,<json_path>)
 	- [Optional] Step 3, Print face data to the console
-		print(data)
+		- print(data)
 	- [Optional]  You can find the initConfig() function in the Extractor class to modify the configuration of the Extractor.
 - ### Train
 	- Step 1, Download the dataset into project root dir.
