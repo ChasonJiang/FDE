@@ -61,7 +61,7 @@ class CharacterCard(object):
         self.cardType = cardType
         data = None
         if cardType == CardType.AiSyoujyo:
-            data = self.paseAiSyoujyo(cardData)
+            data = self.parseAiSyoujyo(cardData)
         elif cardType == CardType.KoikatsuSunshine:
             data = self.parseKoikatsuSunshine(cardData)
         else:
@@ -89,7 +89,7 @@ class CharacterCard(object):
 
         return cardType
     
-    def paseAiSyoujyo(self,cardData:bytes)->dict:
+    def parseAiSyoujyo(self,cardData:bytes)->dict:
         pos = cardData.find(self.pngEndChunck) + 8
         size = int.from_bytes(cardData[pos:pos+4], byteorder="little")
         pos += 4 + size

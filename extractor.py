@@ -23,9 +23,10 @@ class Extractor(object):
         # to extract on "cpu" or "cuda"(gpu)
         self.device = torch.device("cuda")
         # string.saveing path of model
-        self.model_load_path = "models/last.pth"
+        self.model_load_path = "models/epoch 2.pth"
         # tuple. resize image to the shape. The aspect ratio should be 9:16
-        self.im_size = (288,512)
+        # self.im_size = (288,512)
+        self.im_size = None
 
 
     def init(self):
@@ -81,6 +82,6 @@ if __name__ =="__main__":
     # Step 1, Create an Extractor instance
     extractor = Extractor()
     # Step 2, Extract the face data from image to json file
-    data=extractor.extract(filename="test/images/mlls_1.png",savepath="test/face_data/mlls_1.json")
+    data=extractor.extract(filename="test/images/xiaowu.jpg",savepath="test/face_data/xiaowu.json")
     # [Optional] Step 3, Print face data to the console
     print(data)
