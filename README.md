@@ -31,12 +31,12 @@
 	- [Optional]  You can find the initConfig() function in the Extractor class to modify the configuration of the Extractor.
 - ### Train
 	- Step 1, Download the dataset into project root dir.
-    	- dataset donwload link (come soon)
+    	- dataset [donwload link](https://pan.baidu.com/s/1UUIuqn9saSJr8pZpi9YgYQ) code：cbcd
 	- Step 2, Run train.py
 	- [Optional]  You can find the initConfig() function in the Trainer class to modify the configuration of the Trainer.
 - ### Evaluate
 	- Step 1. Download the dataset into project root dir.
-        - dataset donwload link (come soon)
+        - dataset [donwload link](https://pan.baidu.com/s/1UUIuqn9saSJr8pZpi9YgYQ) code：cbcd
 	- Step 2, Run evaluation.py
 	- [Optional]  You can find the initConfig() function in the Evaluator class to modify the configuration of the Evaluator.
 
