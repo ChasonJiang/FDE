@@ -82,6 +82,6 @@ if __name__ =="__main__":
     # Step 1, Create an Extractor instance
     extractor = Extractor()
     # Step 2, Extract the face data from image to json file
-    data=extractor.extract(filename="test/images/xiaowu.jpg",savepath="test/face_data/xiaowu.json")
+    data=extractor.extract(filename="test/images/tz.png",savepath="test/face_data/tz.json")
     # [Optional] Step 3, Print face data to the console
     print(data)

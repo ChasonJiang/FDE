@@ -62,7 +62,7 @@ class Trainer(object):
         for i in range(self.num_epoch):
             for idx, data in enumerate(self.dataLoader):
                 step+=1
-                self.lossfunc.zero_grad()
+                self.optim.zero_grad()
                 imgs:torch.Tensor = data["img"]
                 labels:torch.Tensor = data["label"]
                 imgs=imgs.to(self.device)
