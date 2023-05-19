@@ -42,6 +42,7 @@ class Trainer(object):
         self.tb_log_save_path = "./tb_log/"
 
     def init(self):
+        self.remove_file_in_dir(self.tb_log_save_path)
         self.tb_logger = SummaryWriter(log_dir=self.tb_log_save_path,)
         self.dataset = BaseDataset(self.datasetDir,True,False,self.im_size)
         self.dataLoader = DataLoader(self.dataset,batch_size=self.batch_size,shuffle=True,num_workers=2)
@@ -55,7 +56,11 @@ class Trainer(object):
         self.optim =torch.optim.Adam(self.model.parameters(), lr=self.lr)
 
         self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.2, last_epoch=-1)
-
+    
+    def remove_file_in_dir(self,dir):
+        for file in glob.glob(os.path.join(dir,"*")):  
+            os.remove(file)  
+            print("Deleted " + str(file)) 
 
     def train(self,):
         self.model.train()
