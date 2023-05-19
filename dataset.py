@@ -48,12 +48,16 @@ class BaseDataset(Dataset):
             img = augment(img, hflip=self.use_flip, rotation=self.use_rotation)
 
 
-        # BGR to RGB, HWC to CHW, numpy to tensor
+        # BGR to RGB
         img = img[:, :, [2, 1, 0]]
         if self.im_size is not None:
             img = cv2.resize(img, self.im_size, interpolation = cv2.INTER_AREA)
-        img_tensor = torch.from_numpy(np.ascontiguousarray(np.transpose(img, (2,1,0)))).float()
+        # HWC to CHW
+        img_np=np.transpose(img, (2,0,1))
+        # numpy to tensor
+        img_tensor = torch.from_numpy(np.ascontiguousarray(img_np)).float().div(255)
         label=torch.tensor(label)
+
 
         return {'img': img_tensor, 'label': label, 'name': img_name}
     
