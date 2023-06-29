@@ -31,7 +31,7 @@ FACE_DATA_FIELD = [
     "眼宽1",
     "眼宽2",
     "眼角z轴",
-    "视角y轴",
+    "眼角y轴",
     "左右眼位置1",
     "左右眼位置2",
     "眼角上下位置1",
@@ -94,3 +94,4 @@ def vectorParse(vector:np.ndarray)->dict:
             index+=4
 
     return data
+
