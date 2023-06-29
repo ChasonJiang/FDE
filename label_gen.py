@@ -188,9 +188,9 @@ class CharacterCard(object):
 
         with open(savePath, 'w') as f:
             json.dump(self.data["Custom"], f)
-
-
-    def convertToLabel(self,):
+            
+            
+    def get_face_data_dict(self,)->dict:
         if self.data is None:
             self.parse(self.filePath)
 
@@ -210,7 +210,14 @@ class CharacterCard(object):
             if "shapeValueFace" in item.keys():
                 face_data_dict = item
                 break
+        
+        return face_data_dict
+    
+    def get_headId(self)->int:
+        return int(self.data["Custom"][0]["headId"])
 
+    def convertToLabel(self,):
+        face_data_dict = self.get_face_data_dict()
         assert face_data_dict is not None
 
         face_data = []
@@ -318,18 +325,84 @@ def generate_labels():
 
 
     print(f"dim: {dim}")
+    
+def generate_labels_clean():
+    head = 0
+    bar = tqdm(findAllFile(f"dataset/head_{str(head)}/train/images"))
+    labels = {}
+    train_counter = np.zeros(11,dtype=np.uint32)
+    for imagePath in bar:
+        characterCard = CharacterCard(imagePath)
+        imageName = imagePath.split(os.sep)[-1].split(".")[:-1]
+        if len(imageName)>1:
+            imageName=".".join(imageName)
+        else:
+            imageName = imageName[0]
+        # savePath = os.path.join("./dataset_json",imageName+".json")
+        # characterCard.convertToJson(savePath)
+        headId = characterCard.get_headId()
+        if headId<10:
+            train_counter[headId] += 1
+        else:
+            train_counter[10] += 1
+        
+        if headId!=head:
+            os.remove(imagePath)
+            print(f"image {imageName} is removed! | headId: {headId}")
+            continue
+        
+        face_data=characterCard.convertToLabel()
+        if face_data is not None:
+            dim = len(face_data)
+            labels[imageName]=face_data
+
+    with open(f"./dataset/head_{str(head)}/train/labels.json","w",encoding="utf-8") as f:
+        json.dump(labels,f,ensure_ascii=False,indent=4)
+
+
+    bar = tqdm(findAllFile(f"dataset/head_{str(head)}/val/images"))
+    labels = {}
+    val_counter= np.zeros(11,dtype=np.uint8)
+    dim = 0
+    for imagePath in bar:
+        characterCard = CharacterCard(imagePath)
+        imageName = imagePath.split(os.sep)[-1].split(".")[:-1]
+        if len(imageName)>1:
+            imageName=".".join(imageName)
+        else:
+            imageName = imageName[0]
+        # savePath = os.path.join("./dataset_json",imageName+".json")
+        # characterCard.convertToJson(savePath)
+        if headId<10:
+            val_counter[headId] += 1
+        else:
+            val_counter[10] += 1
+        if headId!=head:
+            os.remove(imagePath)
+            print(f"image {imageName} is removed! | headId: {headId}")
+            continue
+        face_data=characterCard.convertToLabel()
+        if face_data is not None:
+            dim = len(face_data)
+            labels[imageName]=face_data
+
+    with open(f"./dataset/head_{str(head)}/val/labels.json","w",encoding="utf-8") as f:
+        json.dump(labels,f,ensure_ascii=False,indent=4)
+
+    print(f"train head: {train_counter}\nval head: {val_counter}")
 
 
 
 if __name__ == "__main__":
-    characterCard = CharacterCard("test/character_card/xiaowu.png")
+    # characterCard = CharacterCard("test/character_card/test2.png")
 
-    print(characterCard.data)
+    # print(characterCard.data)
 
-    characterCard.convertToJson("xiaowu.json")
+    # characterCard.convertToJson("test/character_card/test2.json")
 
 
     # generate_labels()
+    generate_labels_clean()
 
         
     # bar = tqdm(findAllFile("dataset/new_images"))

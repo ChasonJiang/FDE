@@ -8,6 +8,8 @@ from dataset import BaseDataset
 from torch.nn import CrossEntropyLoss,MSELoss
 # from tensorboardX import SummaryWriter
 from torch.utils.tensorboard import SummaryWriter
+
+from evaluation import Evaluator
 # from sklearn.metrics.pairwise import cosine_similarity
 
 torch.manual_seed(123)
@@ -26,7 +28,7 @@ class Trainer(object):
         # int. Number of feature vector dimensions of face
         self.num_dim = 75
         # int. Number of epoch to learn
-        self.num_epoch = 5
+        self.num_epoch = 20
         # float. learning rate
         self.lr = 0.000005
         # tuple. resize image to the shape 
@@ -54,9 +56,12 @@ class Trainer(object):
         self.model=self.model.to(self.device)
         self.lossfunc  = MSELoss().to(self.device)
         
-        self.optim =torch.optim.Adam(self.model.parameters(), lr=self.lr)
+        self.optim =torch.optim.AdamW(self.model.parameters(), lr=self.lr)
+        # self.optim = torch.optim.AdamW()
 
-        self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.2, last_epoch=-1)
+        # self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.2, last_epoch=-1)
+        self.scheduler=torch.optim.lr_scheduler.CosineAnnealingLR(self.optim,self.num_epoch)
+        self.evaluator = Evaluator()
     
     def remove_file_in_dir(self,dir):
         for file in glob.glob(os.path.join(dir,"*")):  
@@ -85,17 +90,30 @@ class Trainer(object):
                 lr = self.get_current_learning_rate()[0]
                 similarity=torch.nn.functional.cosine_similarity(output.detach(),labels.detach(),dim=1)
                 similarity = torch.mean(similarity)
+                distance = torch.nn.functional.pairwise_distance(output.detach(),labels.detach(),p=2).mean()
                 self.tb_logger.add_scalar("loss",loss,step)
                 self.tb_logger.add_scalar("lr",lr,step)
                 self.tb_logger.add_scalar("batch cosine similarity",similarity,step)
+                self.tb_logger.add_scalar("batch distance",distance,step)
+                
 
-                print(f"epoch: {i+1} | batch: {idx+1} | loss: {loss} | lr: {lr} | similarity: {similarity.cpu().numpy()}")
+                print(f"epoch: {i+1} | batch: {idx+1} | loss: {loss:.6f} | lr: {lr} | distance: {distance:.3f} | cosine similarity: {similarity.cpu().numpy():.3f}")
 
             if (i+1)%self.save_freq==0:
                 self.save_model(self.model,f"epoch {i+1}")
+            self.val(i+1)
             self.scheduler.step()
             
         self.save_model(self.model,f"last")
+        
+    def val(self,epoch):
+        self.evaluator.model_load_path = f"checkpoints/epoch {str(epoch)}.pth"
+        self.evaluator.init()
+        avg_loss,avg_similarity,avg_distance=self.evaluator.evaluate()
+        self.tb_logger.add_scalar("val avg loss",avg_loss,epoch)
+        self.tb_logger.add_scalar("val avg similarity",avg_similarity,epoch)
+        self.tb_logger.add_scalar("val avg distance",avg_distance,epoch)
+        
 
     def get_current_learning_rate(self):
         lr_l = []
@@ -115,8 +133,8 @@ class Trainer(object):
         save_path = os.path.join(self.model_save_path, save_filename)
         print('Saving model [{:s}] ...'.format(save_path))
         state_dict = model.state_dict()
-        for key, param in state_dict.items():
-            state_dict[key] = param.cpu()
+        # for key, param in state_dict.items():
+        #     state_dict[key] = param.cpu()
         torch.save(state_dict, save_path)
 
     def load_model(self, load_path, model, strict=True):

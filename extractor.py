@@ -23,9 +23,9 @@ class Extractor(object):
         # to extract on "cpu" or "cuda"(gpu)
         self.device = torch.device("cuda")
         # string.saveing path of model
-        self.model_load_path = "models/epoch 2.pth"
+        self.model_load_path = "checkpoints/epoch 10.pth"
         # tuple. resize image to the shape. The aspect ratio should be 9:16
-        # self.im_size = (288,512)
+        # self.im_size = (252, 352)
         self.im_size = None
 
 
@@ -34,7 +34,7 @@ class Extractor(object):
         self.model = torchvision.models.resnet50(pretrained=True)
         self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_dim)
         if self.model_load_path is not None:
-            self.load_model(self.model_load_path,self.model)
+            self.load_model(self.model_load_path,self.model,False)
         self.model=self.model.to(self.device)
         
     def extract(self,filename:str,savepath:str):
@@ -73,8 +73,10 @@ class Extractor(object):
         # img = img[:, :, [2, 1, 0]]
         if self.im_size is not None:
             img = cv2.resize(img, self.im_size, interpolation = cv2.INTER_AREA)
-        img_tensor = torch.from_numpy(np.ascontiguousarray(np.transpose(img, (2,1,0)))).float()
-        
+        # HWC to CHW
+        img_np=np.transpose(img, (2,0,1))
+        # numpy to tensor
+        img_tensor = torch.from_numpy(np.ascontiguousarray(img_np)).float().div(255)
         return img_tensor
 
 
@@ -82,6 +84,6 @@ if __name__ =="__main__":
     # Step 1, Create an Extractor instance
     extractor = Extractor()
     # Step 2, Extract the face data from image to json file
-    data=extractor.extract(filename="test/images/tz.png",savepath="test/face_data/tz.json")
+    data=extractor.extract(filename="test/yuechan.png",savepath="test/character_card/yuechan.json")
     # [Optional] Step 3, Print face data to the console
     print(data)

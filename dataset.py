@@ -49,14 +49,16 @@ class BaseDataset(Dataset):
 
 
         # BGR to RGB
-        img = img[:, :, [2, 1, 0]]
+        # img = img[:, :, [2, 1, 0]]
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if self.im_size is not None:
             img = cv2.resize(img, self.im_size, interpolation = cv2.INTER_AREA)
+        # img_tensor = torch.from_numpy(np.ascontiguousarray(np.transpose(img, (2,1,0)))).float()
         # HWC to CHW
         img_np=np.transpose(img, (2,0,1))
         # numpy to tensor
         img_tensor = torch.from_numpy(np.ascontiguousarray(img_np)).float().div(255)
-        label=torch.tensor(label)
+        label=torch.tensor(label,dtype=torch.float32)
 
 
         return {'img': img_tensor, 'label': label, 'name': img_name}
