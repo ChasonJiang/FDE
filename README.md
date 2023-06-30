@@ -32,16 +32,83 @@
 	- [Optional]  You can find the initConfig() function in the Extractor class to modify the configuration of the Extractor.
 - ### Train
 	- Step 1, Download the dataset into project root dir.
-    	- dataset [donwload link](https://pan.baidu.com/s/1l8Vtrrg93e9F_bRBgeooaw) code：3eo1
+    	- dataset [donwload link](https://pan.baidu.com/s/12icYuBkrHXv74vGwH_EGbQ) code：f5no
 	- Step 2, Run train.py
 	- [Optional]  You can find the initConfig() function in the Trainer class to modify the configuration of the Trainer.
 - ### Evaluate
 	- Step 1. Download the dataset into project root dir.
-        - dataset [donwload link](https://pan.baidu.com/s/1l8Vtrrg93e9F_bRBgeooaw) code：3eo1
+        - dataset [donwload link](https://pan.baidu.com/s/12icYuBkrHXv74vGwH_EGbQ) code：f5no
 	- Step 2, Run evaluation.py
 	- [Optional]  You can find the initConfig() function in the Evaluator class to modify the configuration of the Evaluator.
 
 ## Visualization
+
+![avatar](./visualization/hlr.png)
+<details>
+<summary>Face data</summary>
+{
+    "全脸宽度": 33,
+    "脸上部前后位置": 28,
+    "脸部上方和下方": 31,
+    "下脸前后位置": 36,
+    "脸下部宽度": 28,
+    "下颚宽度": 25,
+    "下巴上下位置1": 22,
+    "下巴前后位置": 51,
+    "下颚角度": 34,
+    "下颚底部上下位置": 92,
+    "下巴宽度": 33,
+    "下巴上下位置2": 37,
+    "下巴前后": 36,
+    "脸颊下部上下位置": 52,
+    "下颊前后": 38,
+    "下颊宽度": 34,
+    "脸颊上部上下位置": 44,
+    "上颊前后": 47,
+    "脸上部宽度": 46,
+    "眼睛上下": 53,
+    "眼位": 30,
+    "眼睛前后": 25,
+    "眼宽1": 45,
+    "眼宽2": 33,
+    "眼角z轴": 46,
+    "眼角y轴": 59,
+    "左右眼位置1": 45,
+    "左右眼位置2": 47,
+    "眼角上下位置1": 59,
+    "眼角上下位置2": 39,
+    "眼皮形状1": 58,
+    "眼皮形状2": 39,
+    "整个鼻子上下位置": 31,
+    "整个鼻子前后": 37,
+    "鼻子整体角度X轴": 43,
+    "鼻子的整个宽度": 43,
+    "鼻梁高度": 27,
+    "鼻梁宽度": 39,
+    "鼻梁形状": 50,
+    "鼻宽": 40,
+    "上下鼻子": 44,
+    "鼻子前后": 50,
+    "机头角度X轴": 56,
+    "机头角度Z轴": 37,
+    "鼻子高度": 48,
+    "鼻尖X轴": 54,
+    "鼻尖大小": 39,
+    "嘴上下": 61,
+    "口宽": 36,
+    "嘴唇宽度": 33,
+    "嘴前后位置": 31,
+    "上嘴唇形": 38,
+    "下嘴唇形": 60,
+    "嘴型嘴角": 38,
+    "耳长": 47,
+    "耳角Y轴": 49,
+    "耳角Z轴": 49,
+    "上耳形": 51,
+    "耳下部形状": 37
+}
+</details>
+
 - Image
   
 ![avatar](./visualization/yuechan.png)
