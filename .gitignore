@@ -1,6 +1,6 @@
 dataset/*
 tb_log/*
 test/*
-tb_log/events.out.tfevents.1676909926.White-PC.30184.0
 __pycache__/*
 checkpoints/*
+实验记录.txt
