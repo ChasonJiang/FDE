@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 import torch
 from torch.utils.data import Dataset
-
+import torchvision.transforms as transforms
 
 
 class BaseDataset(Dataset):
@@ -13,6 +13,7 @@ class BaseDataset(Dataset):
                 root_dir,
                 use_flip=False,
                 use_rotation=False,
+                use_colorJitter=False,
                 im_size:list=(256,256)
                 ):
         super(BaseDataset, self).__init__()
@@ -23,6 +24,7 @@ class BaseDataset(Dataset):
         self.root_dir = root_dir
         self.use_flip = use_flip
         self.use_rotation = use_rotation
+        self.use_colorJitter = use_colorJitter
         self.is_augment = True if use_flip or use_rotation else False
         self.im_size = im_size
 
@@ -33,6 +35,8 @@ class BaseDataset(Dataset):
         self.index = {}
         for idx,key in enumerate(self.labels.keys()):
             self.index[idx] = key
+            
+        self.colorJitter = transforms.ColorJitter(0.5,0.5,0.5,0.5)
 
 
     
@@ -58,6 +62,10 @@ class BaseDataset(Dataset):
         img_np=np.transpose(img, (2,0,1))
         # numpy to tensor
         img_tensor = torch.from_numpy(np.ascontiguousarray(img_np)).float().div(255)
+        
+        if self.use_colorJitter:
+            img_tensor=self.colorJitter(img_tensor)
+        
         label=torch.tensor(label,dtype=torch.float32)
 
 

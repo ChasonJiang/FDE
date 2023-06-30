@@ -1,0 +1,16 @@
+id: 1
+resnet 34:
+epoch:20
+相似度良好，仅眼宽有问题
+目前最优
+
+id: 2
+resnet 50:
+epoch:20
+相似度良好，眼宽和眼角z轴有问题
+
+id: 3
+resnet 50:
+epoch:20
+with colorjitter
+相似度良好，指标更好，眼宽和眼角z轴有问题，仅次于id 1

@@ -78,12 +78,14 @@ FACE_DATA_FIELD = [
 def vectorParse(vector:np.ndarray)->dict:
     
     assert isinstance(vector,np.ndarray)
-    assert len(vector) -12 == len(FACE_DATA_FIELD)
+    # assert len(vector) -12 == len(FACE_DATA_FIELD)
     
     data = {}
     index = 0
     for i in range(len(FACE_DATA_FIELD)):
         field = FACE_DATA_FIELD[i]
+        if index == len(vector):
+            break
         if field not in ["眉色","唇色","眼影颜色","腮红颜色"]:
             data[field] = round(vector[index]*100)
             index+=1
@@ -92,6 +94,8 @@ def vectorParse(vector:np.ndarray)->dict:
             rgba.append(round(vector[index+3]*100))
             data[field]=rgba
             index+=4
+        
+        
 
     return data
 

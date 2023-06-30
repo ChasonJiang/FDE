@@ -223,54 +223,11 @@ class CharacterCard(object):
         face_data = []
 
         face_data.extend(face_data_dict["shapeValueFace"])
-        # face_data.append(face_data_dict["headId"]/255.0)
-        # face_data.append(face_data_dict["skinId"]/255.0)
-        # face_data.append(face_data_dict["detailId"]/255.0)
-        # face_data.append(face_data_dict["detailPower"])
-        # face_data.append(face_data_dict["eyebrowId"]/255.0)
-        face_data.extend(face_data_dict["eyebrowColor"])
-        # face_data.append(face_data_dict["noseId"]/255.0)
-        # pupli = face_data_dict["pupil"][0]
-        # face_data.append(pupli["id"]/255.0)
-        # face_data.extend(pupli["baseColor"])
-        # face_data.extend(pupli["subColor"])
-        # face_data.append(pupli["gradMaskId"]/255.0)
-        # face_data.append(pupli["gradBlend"])
-        # face_data.append(pupli["gradOffsetY"])
-        # face_data.append(pupli["gradScale"])
-        # face_data.append(face_data_dict["pupilWidth"])
-        # face_data.append(face_data_dict["pupilHeight"])
-        # face_data.append(face_data_dict["pupilX"])
-        # face_data.append(face_data_dict["pupilY"])
-        # face_data.append(face_data_dict["hlUpId"]/255.0)
-        # face_data.extend(face_data_dict["hlUpColor"])
-        # face_data.append(face_data_dict["hlDownId"]/255.0)
-        # face_data.extend(face_data_dict["hlDownColor"])        
-        # face_data.append(face_data_dict["eyelineUpId"]/255.0)
-        # face_data.append(face_data_dict["eyelineDownId"]/255.0)
-        # face_data.append(face_data_dict["eyelineUpId"]/255.0)
-        # face_data.extend(face_data_dict["eyelineColor"])
-        # face_data.append(face_data_dict["moleId"]/255.0)
-        # face_data.extend(face_data_dict["moleColor"])
-        # face_data.extend(face_data_dict["moleLayout"])
-        makeup = face_data_dict["baseMakeup"] if "baseMakeup" in face_data_dict.keys() else face_data_dict["makeup"]
-        # face_data.append(makeup["lipId"]/255.0)
-        face_data.extend(makeup["lipColor"])
-        # face_data.append(face_data_dict["lipLineId"]/255.0)
-        # face_data.extend(face_data_dict["lipLineColor"])
-        # face_data.append(face_data_dict["lipGlossPower"])
-        # face_data.append(makeup["eyeshadowId"]/255.0)
-        face_data.extend(makeup["eyeshadowColor"])
-        # face_data.append(makeup["cheekId"]/255.0)
-        face_data.extend(makeup["cheekColor"])
-        # face_data.append(face_data_dict["cheekGlossPower"])
-
-
-
-
-        # with open(savePath, 'w') as f:
-        #     json.dump(face_data, f)
-
+        # face_data.extend(face_data_dict["eyebrowColor"])
+        # makeup = face_data_dict["baseMakeup"] if "baseMakeup" in face_data_dict.keys() else face_data_dict["makeup"]
+        # face_data.extend(makeup["lipColor"])
+        # face_data.extend(makeup["eyeshadowColor"])
+        # face_data.extend(makeup["cheekColor"])
         return face_data
 
     
@@ -401,8 +358,8 @@ if __name__ == "__main__":
     # characterCard.convertToJson("test/character_card/test2.json")
 
 
-    # generate_labels()
-    generate_labels_clean()
+    generate_labels()
+    # generate_labels_clean()
 
         
     # bar = tqdm(findAllFile("dataset/new_images"))

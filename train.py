@@ -5,7 +5,7 @@ import torch
 import torchvision
 from torch.utils.data import DataLoader
 from dataset import BaseDataset
-from torch.nn import CrossEntropyLoss,MSELoss
+from torch.nn import CrossEntropyLoss,MSELoss,PairwiseDistance
 # from tensorboardX import SummaryWriter
 from torch.utils.tensorboard import SummaryWriter
 
@@ -26,9 +26,9 @@ class Trainer(object):
         self.datasetDir = "./dataset/train"
         self.batch_size = 8 
         # int. Number of feature vector dimensions of face
-        self.num_dim = 75
+        self.num_dim = 59
         # int. Number of epoch to learn
-        self.num_epoch = 20
+        self.num_epoch = 30
         # float. learning rate
         self.lr = 0.000005
         # tuple. resize image to the shape 
@@ -47,21 +47,21 @@ class Trainer(object):
     def init(self):
         self.remove_file_in_dir(self.tb_log_save_path)
         self.tb_logger = SummaryWriter(log_dir=self.tb_log_save_path,)
-        self.dataset = BaseDataset(self.datasetDir,True,False,self.im_size)
+        self.dataset = BaseDataset(self.datasetDir,True,True,True,self.im_size)
         self.dataLoader = DataLoader(self.dataset,batch_size=self.batch_size,shuffle=True,num_workers=2)
-        self.model = torchvision.models.resnet50(pretrained=True)
+        self.model = torchvision.models.resnet34(pretrained=True)
         self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_dim)
         if self.model_load_path is not None:
             self.load_model(self.model_load_path,self.model)
         self.model=self.model.to(self.device)
         self.lossfunc  = MSELoss().to(self.device)
-        
+        # self.pairwiseDistance = PairwiseDistance().to(self.device)
         self.optim =torch.optim.AdamW(self.model.parameters(), lr=self.lr)
         # self.optim = torch.optim.AdamW()
 
         # self.scheduler=torch.optim.lr_scheduler.StepLR(self.optim, 1, gamma=0.2, last_epoch=-1)
         self.scheduler=torch.optim.lr_scheduler.CosineAnnealingLR(self.optim,self.num_epoch)
-        self.evaluator = Evaluator()
+        self.evaluator = Evaluator(False)
     
     def remove_file_in_dir(self,dir):
         for file in glob.glob(os.path.join(dir,"*")):  
@@ -82,7 +82,13 @@ class Trainer(object):
 
                 output=self.model(imgs)
 
-                loss=self.lossfunc(output,labels)
+                loss1=self.lossfunc(output,labels)
+                loss2=self.lossfunc(output[:,19:-10],labels[:,19:-10])
+                # loss2=self.pairwiseDistance(output[:,19:-10],labels[:,19:-10]).mean()
+                
+                
+                loss = loss1+2.0*loss2
+                
                 loss.backward()
                 self.optim.step()
 
@@ -92,12 +98,15 @@ class Trainer(object):
                 similarity = torch.mean(similarity)
                 distance = torch.nn.functional.pairwise_distance(output.detach(),labels.detach(),p=2).mean()
                 self.tb_logger.add_scalar("loss",loss,step)
+                self.tb_logger.add_scalar("loss1",loss1,step)
+                self.tb_logger.add_scalar("loss2",loss2,step)
                 self.tb_logger.add_scalar("lr",lr,step)
                 self.tb_logger.add_scalar("batch cosine similarity",similarity,step)
                 self.tb_logger.add_scalar("batch distance",distance,step)
                 
+                
 
-                print(f"epoch: {i+1} | batch: {idx+1} | loss: {loss:.6f} | lr: {lr} | distance: {distance:.3f} | cosine similarity: {similarity.cpu().numpy():.3f}")
+                print(f"epoch: {i+1} | batch: {idx+1} | loss: {loss:.6f} | loss1: {loss1:.6f} | loss2: {loss2:.6f} | lr: {lr} | distance: {distance:.3f} | cosine similarity: {similarity.cpu().numpy():.3f}")
 
             if (i+1)%self.save_freq==0:
                 self.save_model(self.model,f"epoch {i+1}")
@@ -107,6 +116,7 @@ class Trainer(object):
         self.save_model(self.model,f"last")
         
     def val(self,epoch):
+        self.evaluator.initConfig()
         self.evaluator.model_load_path = f"checkpoints/epoch {str(epoch)}.pth"
         self.evaluator.init()
         avg_loss,avg_similarity,avg_distance=self.evaluator.evaluate()

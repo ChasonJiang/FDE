@@ -19,11 +19,11 @@ class Extractor(object):
 
     def initConfig(self):
         # int. Number of feature vector dimensions of face. (Don't modify it, if you don't know what it means)
-        self.num_dim = 75
+        self.num_dim = 59
         # to extract on "cpu" or "cuda"(gpu)
         self.device = torch.device("cuda")
         # string.saveing path of model
-        self.model_load_path = "checkpoints/epoch 10.pth"
+        self.model_load_path = "models/last_head_1_34_30_with_colorjitter.pth"
         # tuple. resize image to the shape. The aspect ratio should be 9:16
         # self.im_size = (252, 352)
         self.im_size = None
@@ -31,7 +31,7 @@ class Extractor(object):
 
     def init(self):
 
-        self.model = torchvision.models.resnet50(pretrained=True)
+        self.model = torchvision.models.resnet34(pretrained=True)
         self.model.fc = torch.nn.Linear(self.model.fc.in_features, self.num_dim)
         if self.model_load_path is not None:
             self.load_model(self.model_load_path,self.model,False)
@@ -84,6 +84,6 @@ if __name__ =="__main__":
     # Step 1, Create an Extractor instance
     extractor = Extractor()
     # Step 2, Extract the face data from image to json file
-    data=extractor.extract(filename="test/yuechan.png",savepath="test/character_card/yuechan.json")
+    data=extractor.extract(filename="test/dlrb.jpg",savepath="test/dlrb.json")
     # [Optional] Step 3, Print face data to the console
     print(data)
