@@ -1,7 +1,9 @@
 dataset/*
 tb_log/*
 test/*
+/**/__pycache__/*
 __pycache__/*
 checkpoints/*
 实验记录.txt
 .vscode/*
+weights/*
