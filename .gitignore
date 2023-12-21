@@ -4,3 +4,4 @@ test/*
 __pycache__/*
 checkpoints/*
 实验记录.txt
+.vscode/*
