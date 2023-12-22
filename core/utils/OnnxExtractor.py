@@ -51,11 +51,12 @@ class OnnxExtractor(object):
                                                                ,providers=['TensorrtExecutionProvider', 'CUDAExecutionProvider', "ROCMExecutionProvider", "DmlExecutionProvider",'CPUExecutionProvider'])
         except:
             raise Exception("Nose模型加载失败！")
+        
         try:
             self.hrnet_ort = onnxruntime.InferenceSession(os.path.join(os.path.abspath(os.path.dirname(__file__)),self.hrnet_weight_path)
                                                                ,providers=['TensorrtExecutionProvider', 'CUDAExecutionProvider', "ROCMExecutionProvider", "DmlExecutionProvider",'CPUExecutionProvider'])
         except:
-            raise Exception("Nose模型加载失败！")
+            raise Exception("HRNet模型加载失败！")
         try:
             self.face_crop= FaceCrop()
         except:
@@ -78,7 +79,7 @@ class OnnxExtractor(object):
         image = self.transforms(faces[0])
 
         try:
-            heatmap:np.ndarray=self.hrnet_ort.run(['out'], {'in':image})[0].squeeze(0)
+            heatmap:np.ndarray=self.hrnet_ort.run(['out'], {'in':image})[0]
         except:
             raise Exception("关键点特征提取失败！")
         # eyes = face[:,:,35:70,...]
@@ -89,8 +90,8 @@ class OnnxExtractor(object):
         try:
             face_output:np.ndarray=self.face_model_ort.run(['out'], {'image': image,"heatmap":heatmap})[0].squeeze(0)
             eyes_output:np.ndarray=self.eyes_model_ort.run(['out'], {'image': image,"heatmap":heatmap})[0].squeeze(0)
-            mouth_output:np.ndarray=self.face_model_ort.run(['out'], {'image': image,"heatmap":heatmap})[0].squeeze(0)
-            nose_output:np.ndarray=self.eyes_model_ort.run(['out'], {'image': image,"heatmap":heatmap})[0].squeeze(0)
+            mouth_output:np.ndarray=self.mouth_model_ort.run(['out'], {'image': image,"heatmap":heatmap})[0].squeeze(0)
+            nose_output:np.ndarray=self.nose_model_ort.run(['out'], {'image': image,"heatmap":heatmap})[0].squeeze(0)
             # face_output[20:32]=face_output[20:32]*weight[0] +eyes_output*weight[1]
             output=np.concatenate([face_output,eyes_output,nose_output,mouth_output])
             output=self.decode_output(output)
