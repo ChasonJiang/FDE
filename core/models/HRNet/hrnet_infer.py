@@ -18,12 +18,12 @@ class HRNetInfer():
         self.device = device
         self.mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
         self.std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
-        try:
-            self.face_model_ort = onnxruntime.InferenceSession(os.path.join(os.path.abspath(os.path.dirname(__file__)),self.face_weight_path)
-                                                               ,providers=['TensorrtExecutionProvider', 'CUDAExecutionProvider', "ROCMExecutionProvider", "DmlExecutionProvider",'CPUExecutionProvider'])
-                                                                #  ,providers=['DmlExecutionProvider', 'CUDAExecutionProvider'])
-        except:
-            raise Exception("Face模型加载失败！")
+        # try:
+        #     self.face_model_ort = onnxruntime.InferenceSession(os.path.join(os.path.abspath(os.path.dirname(__file__)),self.face_weight_path)
+        #                                                        ,providers=['TensorrtExecutionProvider', 'CUDAExecutionProvider', "ROCMExecutionProvider", "DmlExecutionProvider",'CPUExecutionProvider'])
+        #                                                         #  ,providers=['DmlExecutionProvider', 'CUDAExecutionProvider'])
+        # except:
+        #     raise Exception("Face模型加载失败！")
 
         
     def get_heatmap(self, imgs:torch.Tensor):
